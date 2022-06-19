@@ -30,7 +30,3 @@ function Item() {
 }
 
 export default Item;
-
-Item.propTypes={
-  contacts: PropTypes.array,
-}
