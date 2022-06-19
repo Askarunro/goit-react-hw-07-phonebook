@@ -1,10 +1,10 @@
 import Item from "../ContactListItem";
 import l from "./ContactList.module.css";
 
-function List() {
+function List({filter,contacts}) {
   return (
     <ul className={l.list}>
-      <Item />
+      <Item filter={filter} contacts={contacts}/>
     </ul>
   );
 }
