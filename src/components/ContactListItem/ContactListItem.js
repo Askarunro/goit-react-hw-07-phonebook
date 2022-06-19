@@ -1,12 +1,13 @@
 import i from "./ContactListItem.module.css";
-import { useDispatch, useSelector } from "react-redux";
-import { remove } from "..//../redux/slice/items";
+import { useSelector } from "react-redux";
+import { useGetContactsQuery, useDeleteContactMutation } from "..//../redux/api/contactsApi"
+
 
 function Item() {
-  const dispatch = useDispatch();
-  const contacts = useSelector((state) => state.items.contacts);
   const filter = useSelector((state) => state.filter);
-
+  const {data: contacts} = useGetContactsQuery();
+  const [deleteContact] = useDeleteContactMutation();
+  
   return (
     <>
       {contacts && (contacts
@@ -16,9 +17,9 @@ function Item() {
         .map((contact) => (
           <li key={contact.name} className={i.item} data-id={contact.name}>
             <p>{contact.name}:</p>
-            <p>{contact.number}</p>
+            <p>{contact.phone}</p>
             <button type="button" 
-            onClick={()=>dispatch(remove(contact.name))} 
+            onClick={()=>deleteContact(contact.id)} 
             className={i.btn}>
               Delete
             </button>
