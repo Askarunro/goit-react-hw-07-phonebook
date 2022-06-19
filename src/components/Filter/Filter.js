@@ -1,18 +1,18 @@
 import l from "./Filter.module.css";
-import { useDispatch } from "react-redux";
-import { searchContact } from "..//../redux/reduce/filter";
+import PropTypes from 'prop-types';
 
-function Filter() {
-  const dispatch = useDispatch();
-  const onChangeInputFind = (e) => {
-    dispatch(searchContact(e.currentTarget.value));
-  };
+function Filter({onChange}) {
+
   return (
     <label className={l.label}>
       Find contacts by name
-      <input type="text" onChange={onChangeInputFind} />
+      <input type="text" onChange={onChange} />
     </label>
   );
 }
 
 export default Filter;
+
+Filter.prototype={
+  onChange: PropTypes.func
+}
