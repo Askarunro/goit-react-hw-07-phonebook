@@ -1,13 +1,9 @@
 import i from "./ContactListItem.module.css";
-import { useSelector } from "react-redux";
-import { useGetContactsQuery, useDeleteContactMutation } from "..//../redux/api/contactsApi"
+import { useDeleteContactMutation } from "..//../redux/api/contactsApi"
+import PropTypes from 'prop-types';
 
-
-function Item() {
-  const filter = useSelector((state) => state.filter);
-  const {data: contacts} = useGetContactsQuery();
+function Item({filter,contacts}) {
   const [deleteContact] = useDeleteContactMutation();
-  
   return (
     <>
       {contacts && (contacts
@@ -30,3 +26,8 @@ function Item() {
 }
 
 export default Item;
+
+Item.propTypes={
+  contacts: PropTypes.array,
+  filter: PropTypes.string,
+}
