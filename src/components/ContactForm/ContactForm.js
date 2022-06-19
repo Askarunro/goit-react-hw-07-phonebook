@@ -1,13 +1,13 @@
 import f from "./ContactForm.module.css";
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { add } from "..//../redux/slice/items";
+import {useAddContactMutation, useGetContactsQuery} from "..//../redux/api/contactsApi"
 
 function Form() {
-  const contacts = useSelector((state) => state.items.contacts);
   const [name, setName] = useState("");
-  const [number, setNumber] = useState("");
-  const dispatch = useDispatch();
+  const [phone, setPhone] = useState("");
+
+const [addContact] = useAddContactMutation();
+const {data: contacts} = useGetContactsQuery();
 
   const onChangeInput = (e) => {
     const { name, value } = e.currentTarget;
@@ -16,34 +16,34 @@ function Form() {
       case "name":
         setName(value);
         break;
-      case "number":
-        setNumber(value);
+      case "phone":
+        setPhone(value);
         break;
     }
   };
 
-  const formSubmitHandler = (data) => {
+  const formSubmitHandler = async (values) => {
     let exist = false;
     if (contacts.length >= 0) {
-      contacts.forEach((contact) => {
-        if (contact.name.toLowerCase() === data.name.toLowerCase()) {
+    contacts.forEach((contact) => {
+        if (contact.name.toLowerCase() === values.name.toLowerCase()) {
           exist = true;
         }
       });
     }
     if (!exist) {
-      dispatch(add({ name, number }));
-    } else alert(`${data.name} is already i contacts`);
+      await addContact(values);
+    } else alert(`${values.name} is already i contacts`);
   };
 
   const reset = () => {
     setName("");
-    setNumber("");
+    setPhone("");
   };
 
   const onSubmitForm = (e) => {
     e.preventDefault();
-    formSubmitHandler({ name, number });
+    formSubmitHandler({ name, phone });
     reset();
   };
 
@@ -65,8 +65,8 @@ function Form() {
         Number
         <input
           type="tel"
-          name="number"
-          value={number}
+          name="phone"
+          value={phone}
           pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
           title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
           required
